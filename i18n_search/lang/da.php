@@ -87,6 +87,6 @@ $i18n = [
   , 'TAG_MODE' => "Hvilke etiketter skal benyttes?"
   , 'TAGS_LANG_OR_DEFLANG' => "Etiketter for standardsprog (hvis ikke der eksisterer sprogspecifikke etiketter)"
   , 'TAGS_ALWAYS_DEFLANG' => "Etiketter for standardsprog"
-  , 'TAGS_ALWAYS_LANG' => "Sprogspecifikke etiketter")
+  , 'TAGS_ALWAYS_LANG' => "Sprogspecifikke etiketter"
   , 'SHOW_SCRIPT' => "Use autocomplete script? (requires a jQuery library connection)"
   ];
