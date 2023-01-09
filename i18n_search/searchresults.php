@@ -43,7 +43,7 @@ if (!function_exists('i18n_search_archive')) {
   $live = array_key_exists('live',$params) ? $params['live'] : null;
   $preview = array_key_exists('preview',$params) && $params['preview'];
   if (!$tags && !$words && !isset($_REQUEST['tags']) && !isset($_REQUEST['words']) && !$live) return;
-  $headerText = $i18n['HEADER'];
+  $headerText = @$i18n['HEADER'];
   $notFoundText = @$i18n['NOT_FOUND'];
   $showLanguage = $is_i18n && array_key_exists('showLanguage',$params) ? $params['showLanguage'] : $is_i18n;
   $showDate = array_key_exists('showDate',$params) ? $params['showDate'] : true;
@@ -89,7 +89,7 @@ if (!function_exists('i18n_search_archive')) {
   
   if ($headText != '') {
 ?>
-  <h2 class="search-header"><?php echo $headText; ?></h2>
+  <h2 class="search-header"><?php echo $headerText; ?></h2>
 <?php
   }
   if (count($results) <= 0 && !$live) {
@@ -157,7 +157,7 @@ if (!function_exists('i18n_search_archive')) {
       <span class="search-entry-language"><?php echo htmlspecialchars($item->language, ENT_NOQUOTES); ?></span>
 <?php     } ?>
 <?php     if ($link) { ?>
-      <a href="<?php echo htmlspecialchars($link); ?>">
+      <a href="<?php echo htmlspecialchars($item->link); ?>">
 <?php     } ?>
         <?php echo htmlspecialchars($item->title, ENT_NOQUOTES); ?>
 <?php     if ($link) { ?>
@@ -166,7 +166,7 @@ if (!function_exists('i18n_search_archive')) {
     </h3>
 <?php     if ($showDate) { ?>
   
-    <div class="search-entry-date"><?php echo str_replace('%','',date('d-m-Y', $item->pubDate)); ?></div>
+    <div class="search-entry-date"><?php echo str_replace('%','',date($dateFormat, $item->pubDate)); ?></div>
 <?php     } ?>
     <div class="search-entry-excerpt"><?php echo ''.$item->getExcerpt($item->content,$numWords); ?></div>
 <?php   
