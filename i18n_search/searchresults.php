@@ -81,13 +81,7 @@ if (!function_exists('i18n_search_archive')) {
     $results = $allresults;
   }
   
-  if($headerText!==null){
-   $headText = trim($headerText);
-  }else{
-    $headText = '';
-  }
-  
-  if ($headText != '') {
+  if ($headerText && trim($headerText) != '') {
 ?>
   <h2 class="search-header"><?php echo $headerText; ?></h2>
 <?php
