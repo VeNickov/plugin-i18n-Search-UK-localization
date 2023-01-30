@@ -9,12 +9,12 @@ class I18nSearchPageItem {
   private $defdata = null; // data of default language
   private $id;
   private $language = '';
-  private $tags = [];
+  private $tags = array();
   private $creDate;
   private $pubDate;
   private $title = '';
   private $content = '';
-  private $fields = [];
+  private $fields = array();
 
   public function __construct($pagedata) {
     if (!isset(self::$isi18n)) {
@@ -104,10 +104,10 @@ class I18nSearchIndexer {
   static private $isi18n = false;
   static private $defaultLanguage;
   
-  private $tags = [];  // $tags[$tag]["$id_$language"] = 1
-  private $words = []; // $words[$word]["$id_$language"] = num
-  private $dates = []; // $dates["$id_$language"] = "$pubDate $creDate"
-  private $itemTags = []; // $itemTags["$id_$language"] = array("tag1", ...)
+  private $tags = array();  // $tags[$tag]["$id_$language"] = 1
+  private $words = array(); // $words[$word]["$id_$language"] = num
+  private $dates = array(); // $dates["$id_$language"] = "$pubDate $creDate"
+  private $itemTags = array(); // $itemTags["$id_$language"] = array("tag1", ...)
 
   private $tagWeight = I18N_TAG_WEIGHT;
   private $titleWeight = I18N_TITLE_WEIGHT;
@@ -126,8 +126,8 @@ class I18nSearchIndexer {
     	self::$instance->load();
     	self::$instance->indexPage($url);
     } else {
-    self::$instance->indexPages();
-    exec_action(I18N_ACTION_INDEX);
+    	self::$instance->indexPages();
+    	exec_action(I18N_ACTION_INDEX);
     }
     self::$instance->processTags();
     self::$instance->save();
@@ -162,7 +162,7 @@ class I18nSearchIndexer {
         do {
           $word = mb_strtolower($match[0], 'UTF-8');
           if (!isset($this->words[$word])) {
-            $this->words[$word] = [$fullid => $weight];
+            $this->words[$word] = array($fullid => $weight);
           } else if (!isset($this->words[$word][$fullid])) {
             $this->words[$word][$fullid] = $weight;
           } else {
@@ -176,7 +176,7 @@ class I18nSearchIndexer {
       foreach ($matches[0] as $word) {
         $word = strtolower($word);
         if (!isset($this->words[$word])) {
-          $this->words[$word] = [$fullid => $weight];
+          $this->words[$word] = array($fullid => $weight);
         } else if (!isset($this->words[$word][$fullid])) {
           $this->words[$word][$fullid] = $weight;
         } else {
@@ -250,7 +250,7 @@ class I18nSearchIndexer {
         // execute filter, but ignore return value
         foreach ($filters as $filter)  {
           if ($filter['filter'] == I18N_FILTER_INDEX_PAGE) {
-            call_user_func_array($filter['function'], [$item]);
+            call_user_func_array($filter['function'], array($item));
           }
         }
         $this->addItem($item->id,$item->language,$item->creDate,$item->pubDate,$item->tags,$item->title,$item->content);

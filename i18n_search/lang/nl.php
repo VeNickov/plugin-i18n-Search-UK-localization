@@ -2,6 +2,7 @@
 # by Simplicitie
 $i18n = array(
     'GO' => "zoeken"
+  , 'PLACEHOLDER' => "Search words"
   , 'HEADER' => "Zoekresultaten"
   , 'NOT_FOUND' => "Geen resultaten gevonden"
   , 'DATE_LOCALE' => "nl_NL.utf8,nl_NL,nl"
@@ -33,6 +34,7 @@ $i18n = array(
   , 'MAX' => "Maximum aantal resultaten die op 1 pagina worden getoond."
   , 'NUM_WORDS' => "Aantal woorden in fragmenten (0 = geen, -1 = gehele inhoud)"
   , 'SHOW_LANGUAGE' => "Toon de taal van zoekresultaat (alleen nuttig voor meertalige websites)"
+  , 'SHOW_UL' => "Use UL and LI HTML-tags"
   , 'SHOW_DATE' => "Toon de publicatiedatum van de zoekresultaten"
   , 'SHOW_PAGING' => "Toon paginanavigatie, als er meer resultaten zijn"
   , 'SAVE_CONFIGURATION' => "Opslaan van de zoekconfiguratie"

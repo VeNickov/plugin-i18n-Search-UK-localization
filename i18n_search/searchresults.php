@@ -7,13 +7,13 @@ if (!function_exists('i18n_search_display_with_component')) {
 if (!function_exists('i18n_search_order_by_tags')) {
   function i18n_search_order_by_tags($items, $tags) {
     if (!is_array($tags)) $tags = preg_split('/\s*,\s*/', $tags);
-    foreach ($tags as $i => $tag) $groups[$i] = [];
+    foreach ($tags as $i => $tag) $groups[$i] = array();
     foreach ($items as $item) {
       foreach ($tags as $i => $tag) {
         if ($tag == '*' || @in_array($tag, $item->tags)) $groups[$i][] = $item;
       }
     }
-    $newitems = [];
+    $newitems = array();
     foreach ($groups as $group) $newitems = array_merge($newitems, $group);
     return $newitems;
   }
@@ -136,7 +136,7 @@ if (!function_exists('i18n_search_archive')) {
         // is there any plugin that displays/renders this item?
         foreach ($filters as $filter)  {
           if ($filter['filter'] == I18N_FILTER_DISPLAY_ITEM) {
-            if (call_user_func_array($filter['function'], [$item, $showLanguage, $showDate, $dateFormat, $numWords])) {
+            if (call_user_func_array($filter['function'], array($item, $showLanguage, $showDate, $dateFormat, $numWords))) {
               $done = true; 
               break; 
             }
@@ -159,8 +159,7 @@ if (!function_exists('i18n_search_archive')) {
 <?php     } ?>
     </h3>
 <?php     if ($showDate) { ?>
-  
-    <div class="search-entry-date"><?php echo str_replace('%','',date($dateFormat, $item->pubDate)); ?></div>
+    <div class="search-entry-date"><?php echo strftime($dateFormat, $item->pubDate); ?></div>
 <?php     } ?>
     <div class="search-entry-excerpt"><?php echo ''.$item->getExcerpt($item->content,$numWords); ?></div>
 <?php   

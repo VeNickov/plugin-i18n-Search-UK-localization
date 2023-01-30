@@ -1,5 +1,5 @@
 <?php
-$i18n = [
+$i18n = array(
     'GO' => "Search"
   , 'PLACEHOLDER' => "Search words"
   , 'HEADER' => "Search Results"
@@ -80,4 +80,4 @@ $i18n = [
   , 'TAGS_ALWAYS_LANG' => "Always use language specific tags"
   , 'MARK' => "Mark search terms on pages"
   , 'SHOW_SCRIPT' => "Use autocomplete script? (requires a jQuery library connection)"
-];
+);

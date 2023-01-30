@@ -1,7 +1,7 @@
 <?php
 
 function filter($items, $langs) {
-  $filtered = [];
+  $filtered = array();
   foreach ($items as $item) {
     $pos = strrpos($item,'_');
     $lang = $pos !== false ? substr($item,$pos+1) : '';
@@ -15,10 +15,10 @@ $tags = preg_split('/\s+/',trim(strtolower($_GET["tags"])));
 $langs = isset($_GET['langs']) ? preg_split('/,/',$_GET['langs']) : null;
 if (!$tags) die;
 header('Content-Type: application/json');
-$datadir = substr(__DIR__, 0, strrpos(__DIR__, DIRECTORY_SEPARATOR.'plugins')) . '/data/';
+$datadir = substr(dirname(__FILE__), 0, strrpos(dirname(__FILE__), DIRECTORY_SEPARATOR.'plugins')) . '/data/';
 $tagfile = $datadir . 'other/i18n_tag_index.txt';
 $slugs = null;
-$remainingtags = [];
+$remainingtags = array();
 if (file_exists($tagfile)) {
   $f = fopen($tagfile, "r");
   while (($line = fgets($f)) !== false) {

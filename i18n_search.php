@@ -104,7 +104,7 @@ if (basename($_SERVER['PHP_SELF']) != 'index.php') { // back end only
 # ===== BACKEND =====
 add_action('changedata-save', 'delete_i18n_search_index'); 
 add_action('page-delete', 'delete_i18n_search_index'); // GetSimple 3.0+
-add_action('plugins-sidebar', 'createSideMenu', [$thisfile, i18n_r('i18n_search/CONFIGURE')]); 
+add_action('plugins-sidebar', 'createSideMenu', array($thisfile, i18n_r('i18n_search/CONFIGURE'))); 
 
 # ===== FRONTEND =====
 add_action('index-pretemplate','i18n_search_pretemplate_for_rss');
@@ -138,16 +138,16 @@ function create_i18n_search_index() {
 function i18n_search_index_page($item) {
   // virtual parent tag
   $parent = @$item->parent;
-  if ($parent) $item->addTags('parent', ['_parent_'.$parent]); 
+  if ($parent) $item->addTags('parent', array('_parent_'.$parent)); 
   // virtual date tags
   $pubDate = @$item->pubDate;
-  $item->addTags('pubDate', ['_pub_'.date('Ym',$pubDate), '_pub_'.date('Y',$pubDate)]);
+  $item->addTags('pubDate', array('_pub_'.date('Ym',$pubDate), '_pub_'.date('Y',$pubDate)));
   $creDate = @$item->creDate;
   if ($creDate) {
-    $item->addTags('creDate', ['_cre_'.date('Ym',$creDate), '_cre_'.date('Y',$creDate)]);
+    $item->addTags('creDate', array('_cre_'.date('Ym',$creDate), '_cre_'.date('Y',$creDate)));
   }
   $menu = @$item->menuStatus;
-  if ($menu == 'Y') $item->addTags('menuStatus', ['_menu']);
+  if ($menu == 'Y') $item->addTags('menuStatus', array('_menu'));
 }
 
 
@@ -204,7 +204,7 @@ function return_i18n_search_results($tags=null, $words=null, $first=0, $max=10, 
   $results = I18nSearcher::search($tags, $words, $order, $lang);
   $count = count($results);
   if ($max > 0) $results = array_slice($results, $first, $max); else if ($first > 0) $results = array_slice($results, $first);
-  return ['totalCount' => $count, 'first' => $first, 'results' => $results];
+  return array('totalCount' => $count, 'first' => $first, 'results' => $results);
 }
 
 function get_i18n_search_rsslink($params) {

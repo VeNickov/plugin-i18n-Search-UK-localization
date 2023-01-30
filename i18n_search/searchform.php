@@ -20,7 +20,7 @@
   $reqlangs = null;
   if (function_exists('return_i18n_languages')) {
     $deflang = return_i18n_default_language();
-    $languages = $language ? [$language] : return_i18n_languages();
+    $languages = $language ? array($language) : return_i18n_languages();
     foreach ($languages as $lang) {
       if ($lang == $deflang) $lang = '';
       $reqlangs = $reqlangs === null ? $lang : $reqlangs.','.$lang;
@@ -36,6 +36,7 @@
   
 ?>
 <form action="<?php echo $url; ?>" method="<?php echo $method; ?>" class="search">
+
 <?php if ($showScript && $showTags && $minTagSizePercent && $maxTagSizePercent && $minTagSizePercent > 0 && $minTagSizePercent <= $maxTagSizePercent) { ?>
   <div class="tags" style="display:none">
   	<?php I18nSearchViewer::displayTagsImpl($minTagSizePercent,$maxTagSizePercent,$params); ?>

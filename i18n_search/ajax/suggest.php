@@ -8,7 +8,7 @@ function translate($s) {
 }
 
 function filter($items, $langs) {
-  $filtered = [];
+  $filtered = array();
   foreach ($items as $item) {
     $pos = strrpos($item,'_');
     $lang = $pos !== false ? substr($item,$pos+1,strrpos($item,':')-$pos-1) : '';
@@ -26,11 +26,11 @@ $langs = isset($_GET['langs']) ? preg_split('/,/',$_GET['langs']) : null;
 
 global $transliteration;
 $transliteration = null;
-$datadir = substr(__DIR__, 0, strrpos(__DIR__, DIRECTORY_SEPARATOR.'plugins')) . '/data/';
+$datadir = substr(dirname(__FILE__), 0, strrpos(dirname(__FILE__), DIRECTORY_SEPARATOR.'plugins')) . '/data/';
 if (file_exists($datadir . 'other/i18n_search_settings.xml')) {
   $data = simplexml_load_file($datadir . 'other/i18n_search_settings.xml');
   if (isset($data->transliteration) && (string) $data->transliteration) {
-    $transliteration = [];
+    $transliteration = array();
     $lines = preg_split('/\r?\n/', (string) $data->transliteration);
     foreach ($lines as $line) {
       if (($pos = strpos($line,'=')) !== false) {

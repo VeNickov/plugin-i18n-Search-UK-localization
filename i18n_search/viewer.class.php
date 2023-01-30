@@ -2,7 +2,7 @@
 
 class I18nSearchViewer {
   
-  private static $rssHeaders = [];
+  private static $rssHeaders = array();
   
   # ===== PUBLIC FUNCTIONS =====
   
@@ -16,7 +16,7 @@ class I18nSearchViewer {
     $c = stripslashes(htmlspecialchars_decode($content, ENT_QUOTES));
     if (preg_match_all("/\(%\s*searchrss(\s+(?:%[^%\)]|[^%])+)?\s*%\)/", $c, $matches)) {
       foreach ($matches[1] as $match) {
-        $params = [];
+        $params = array();
         $paramstr = isset($match) ? html_entity_decode(trim($match), ENT_QUOTES, 'UTF-8') : '';
         while (preg_match('/^([a-zA-Z][a-zA-Z_-]*)[:=]([^"\'\s]*|"[^"]*"|\'[^\']*\')(?:\s|$)/', $paramstr, $pmatch)) {
           $key = $pmatch[1];
@@ -51,17 +51,17 @@ class I18nSearchViewer {
   }
   
   public static function displaySearchForm($params=null) {
-    $params = self::getSearchParams(is_array($params) ? $params : []);
+    $params = self::getSearchParams(is_array($params) ? $params : array());
     include(GSPLUGINPATH.'i18n_search/searchform.php');
   }
   
   public static function displaySearchResults($params=null) {
-    $params = self::getSearchParams(is_array($params) ? $params : []);
+    $params = self::getSearchParams(is_array($params) ? $params : array());
     include(GSPLUGINPATH.'i18n_search/searchresults.php');
   }
   
   public static function displayTags($params=null) {
-    $params = self::getSearchParams(is_array($params) ? $params : []);
+    $params = self::getSearchParams(is_array($params) ? $params : array());
     $minPercent = array_key_exists('minTagSize',$params) ? (int) $params['minTagSize'] : I18N_MIN_TAG_SIZE;
     $maxPercent = array_key_exists('maxTagSize',$params) ? (int) $params['maxTagSize'] : I18N_MAX_TAG_SIZE;
     self::displayTagsImpl($minPercent, $maxPercent, $params);
@@ -80,7 +80,7 @@ class I18nSearchViewer {
   private static function replaceContentMatch($match) {
     global $args;
     $function = $match[2];
-    $params = [];
+    $params = array();
     $paramstr = isset($match[3]) ? html_entity_decode(trim($match[3]), ENT_QUOTES, 'UTF-8') : '';
     while (preg_match('/^([a-zA-Z][a-zA-Z0-9_-]*)[:=]([^"\'\s]*|"[^"]*"|\'[^\']*\')(?:\s|$)/', $paramstr, $pmatch)) {
       $key = $pmatch[1];
@@ -122,7 +122,7 @@ class I18nSearchViewer {
   }
   
   private static function mergeTexts($lang, &$params) { 
-    $i18n = [];
+    $i18n = array();
     if (!file_exists(GSPLUGINPATH.'i18n_search/lang/'.$lang.'.php')) return false;
     @include(GSPLUGINPATH.'i18n_search/lang/'.$lang.'.php'); 
     if (count($i18n) > 0) foreach ($i18n as $code => $text) {

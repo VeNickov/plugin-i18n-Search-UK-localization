@@ -8,18 +8,18 @@
   // languages
   $isi18n = function_exists('return_i18n_languages');
   $defaultLanguage = $isi18n ? return_i18n_default_language() : '';
-  $languages = $isi18n ? ($language ? [$language] : return_i18n_languages()) : null;
+  $languages = $isi18n ? ($language ? array($language) : return_i18n_languages()) : null;
 
   // read tag file
   if (!file_exists(GSDATAOTHERPATH . I18N_WORD_INDEX)) create_i18n_search_index();
-  $alltags = [];
+  $alltags = array();
   $f = fopen(GSDATAOTHERPATH . I18N_TAG_INDEX, "r");
   while (($line = fgets($f)) !== false) {
     $items = preg_split("/\s+/", trim($line));
     $tag = array_shift($items);
     if ($languages) {
       // filter items
-      $filteredItems = [];
+      $filteredItems = array();
       foreach ($items as $item) {
         $pos = strrpos($item,'_');
         $lang = $pos !== false ? substr($item,$pos+1) : $defaultLanguage;
@@ -40,12 +40,12 @@
       if (isset($alltags[$tag])) {
         $allurls = $allurls ? array_values(array_intersect($allurls, $alltags[$tag])) : $alltags[$tag];
       } else {
-        $allurls = [];
+        $allurls = array();
         break;
       }
     }
   } else {
-    $allurls = [];
+    $allurls = array();
     foreach ($alltags as $tag => &$urls) {
       foreach ($urls as $url) {
         if (!in_array($url, $allurls)) $allurls[] = $url;
@@ -60,7 +60,7 @@
       if (isset($alltags[$tag])) {
         $filteredurls = $filteredurls ? array_values(array_intersect($filteredurls, $alltags[$tag])) : $alltags[$tag];
       } else {
-        $filteredurls = [];
+        $filteredurls = array();
       }
     }
   }

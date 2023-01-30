@@ -215,7 +215,7 @@ class I18nSearcher {
   private $sort_order = '+';
   
   public static function &search($tags=null, $words=null, $order=null, $lang=null) {
-    $results = [];
+    $results = array();
     if (!$tags && isset($_REQUEST['tags'])) $tags = trim($_REQUEST['tags']);
     if (!$words && isset($_REQUEST['words'])) $words = trim($_REQUEST['words']);
     if (!$tags && !$words) return $results;
@@ -228,7 +228,7 @@ class I18nSearcher {
 
   public static function &tags() {
     if (!file_exists(GSDATAOTHERPATH . I18N_WORD_INDEX)) create_i18n_search_index();
-    $tags = [];
+    $tags = array();
     $f = fopen(GSDATAOTHERPATH . I18N_TAG_INDEX, "r");
     while (($line = fgets($f)) !== false) {
       $items = preg_split("/\s+/", trim($line));
@@ -247,7 +247,7 @@ class I18nSearcher {
     if (file_exists(GSDATAOTHERPATH.I18N_SEARCH_SETTINGS_FILE)) {
       $data = getXML(GSDATAOTHERPATH.I18N_SEARCH_SETTINGS_FILE);
       if (isset($data->transliteration) && (string) $data->transliteration) {
-        $this->transliteration = [];
+        $this->transliteration = array();
         $lines = preg_split('/\r?\n/', (string) $data->transliteration);
         foreach ($lines as $line) {
           if (($pos = strpos($line,'=')) !== false) {
@@ -258,8 +258,8 @@ class I18nSearcher {
         if (count($this->transliteration) <= 0) $this->transliteration = null;
       }
     }
-    $this->tags = is_array($tags) ? $tags : (trim($tags) != '' ? preg_split("/\s+/", trim($tags)) : []);
-    $this->words = is_array($words) ? $words : (trim($words) != '' ? preg_split("/\s+/", trim($words)) : []);
+    $this->tags = is_array($tags) ? $tags : (trim($tags) != '' ? preg_split("/\s+/", trim($tags)) : array());
+    $this->words = is_array($words) ? $words : (trim($words) != '' ? preg_split("/\s+/", trim($words)) : array());
     $this->language = $language;
     $order = $order ? trim($order) : '';
     if (substr($order,0,1) == '+' || substr($order,0,1) == '-') {
@@ -352,7 +352,7 @@ class I18nSearcher {
   }
 
   private function &execute() {
-    $results = [];
+    $results = array();
     if (count($this->tags) <= 0 && count($this->words) <= 0) return $results;
     if (!file_exists(GSDATAOTHERPATH . I18N_WORD_INDEX)) create_i18n_search_index();
     $isi18n = function_exists('i18n_init');
@@ -361,10 +361,10 @@ class I18nSearcher {
     if ($ismb) mb_regex_encoding('UTF-8');
     // language?
     $defaultLanguage = function_exists('return_i18n_default_language') ? return_i18n_default_language() : '';
-    $languages = function_exists('return_i18n_languages') ? ($this->language ? [$this->language] : return_i18n_languages()) : [$defaultLanguage];
+    $languages = function_exists('return_i18n_languages') ? ($this->language ? array($this->language) : return_i18n_languages()) : array($defaultLanguage);
     // scores per id
     $idScores = null;
-    $tagIds = [];
+    $tagIds = array();
     if ($this->tags && count($this->tags) > 0) {
       for ($i=0; $i<count($this->tags); $i++) {
         if ($ismb) {
@@ -372,7 +372,7 @@ class I18nSearcher {
         } else { 
           $this->tags[$i] = preg_replace("/[^\w]/", "_", strtolower(trim($this->tags[$i])));
         }
-        $tagIds[$this->tags[$i]] = [];
+        $tagIds[$this->tags[$i]] = array();
       }
       $f = fopen(GSDATAOTHERPATH . I18N_TAG_INDEX, "r");
       while (($line = fgets($f)) !== false) {
@@ -396,14 +396,14 @@ class I18nSearcher {
       }
     }
     if ($this->words && count($this->words) > 0) {
-      $wordIds = [];
+      $wordIds = array();
       for ($i=0; $i<count($this->words); $i++) {
         if ($ismb) {
           $this->words[$i] = mb_strtolower(trim($this->words[$i]), 'UTF-8');
         } else {
           $this->words[$i] = strtolower(trim($this->words[$i]));
         }
-        $wordIds[$this->words[$i]] = [];
+        $wordIds[$this->words[$i]] = array();
       }
       $f = fopen(GSDATAOTHERPATH . I18N_WORD_INDEX, "r");
       while (($line = fgets($f)) !== false) {
@@ -436,10 +436,10 @@ class I18nSearcher {
         }
       }
     }
-    $filteredresults = [];
+    $filteredresults = array();
     if ($idScores && count($idScores) > 0) {
-      $idPubDates = [];
-      $idCreDates = [];
+      $idPubDates = array();
+      $idCreDates = array();
       $f = fopen(GSDATAOTHERPATH . I18N_DATE_INDEX, "r");
       while (($line = fgets($f)) !== false) {
         $items = preg_split("/\s+/", trim($line));
@@ -473,11 +473,11 @@ class I18nSearcher {
             $item = null;
             foreach ($filters as $filter)  {
               if ($filter['filter'] == I18N_FILTER_SEARCH_ITEM) {
-                $item = call_user_func_array($filter['function'], [$id, $language, $idCreDates[$fullid], $idPubDates[$fullid], $idScores[$fullid]]);
+                $item = call_user_func_array($filter['function'], array($id,$language,$idCreDates[$fullid],$idPubDates[$fullid],$idScores[$fullid]));
                 if ($item) break;
               }
             }
-            $results[] = $item ?: new I18nSearchResultItem($id,$language,$idCreDates[$fullid],$idPubDates[$fullid],$idScores[$fullid]);
+            $results[] = $item ? $item : new I18nSearchResultItem($id,$language,$idCreDates[$fullid],$idPubDates[$fullid],$idScores[$fullid]);
           }
         }
       }
@@ -486,7 +486,7 @@ class I18nSearcher {
         $vetoed = false;
         foreach ($filters as $filter)  {
           if ($filter['filter'] == I18N_FILTER_VETO_SEARCH_ITEM) {
-            if (call_user_func_array($filter['function'], [$item])) {
+            if (call_user_func_array($filter['function'], array($item))) {
               $vetoed = true; 
               break;
             }
@@ -495,11 +495,11 @@ class I18nSearcher {
         if (!$vetoed) $filteredresults[] = $item;
       }
       switch ($this->sort_field) {
-        case 'url': usort($filteredresults, [$this, 'compare_url']); break;
-        case 'date': usort($filteredresults, [$this, 'compare_date']); break;
-        case 'created': usort($filteredresults, [$this, 'compare_created']); break;
-        case 'score': usort($filteredresults, [$this, 'compare_score']); break;
-        default: usort($filteredresults, [$this, 'compare_field']);
+        case 'url': usort($filteredresults, array($this,'compare_url')); break;
+        case 'date': usort($filteredresults, array($this,'compare_date')); break;
+        case 'created': usort($filteredresults, array($this,'compare_created')); break;
+        case 'score': usort($filteredresults, array($this,'compare_score')); break;
+        default: usort($filteredresults, array($this,'compare_field'));
       }
       if ($this->sort_order == '-') {
         $filteredresults = array_reverse($filteredresults);

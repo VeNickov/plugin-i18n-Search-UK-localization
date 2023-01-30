@@ -6,7 +6,7 @@ class I18nSearchMarker {
   
   public static function getWords() {
     if (self::$words !== null) return self::$words;
-    self::$words = [];
+    self::$words = array();
     if (@$_GET['mark']) self::$words = array_merge(self::$words, preg_split('/\s+/', trim($_GET['mark'])));
     $referer = @$_SERVER['HTTP_REFERER'];
     if ($referer) {
@@ -26,7 +26,7 @@ class I18nSearchMarker {
     return self::$words;
   }
   
-  public static function mark($html, $words=[]) {
+  public static function mark($html, $words=array()) {
     if (!$words || count($words) <= 0) return $html;
     $ismb = function_exists('mb_ereg_search');
     $inlineTags = 'b|i|em|strong|tt|big|small|strike|u|span|a';
